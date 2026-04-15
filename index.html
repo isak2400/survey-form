@@ -1,122 +1,899 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-        }
-        h1 {
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .form-group textarea {
-            resize: vertical;
-            height: 100px;
-        }
-        .form-group button {
-            padding: 10px 20px;
-            background-color: #007acc;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .form-group button:hover {
-            background-color: #005f99;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Honestly — Copenhagen Restaurant Social App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #181818;
+      --bg-soft: #222222;
+      --card: #252525;
+      --muted: #9f9f9f;
+      --text: #f3f2ef;
+      --accent: #b1562e;
+      --accent-soft: #6f381f;
+      --danger: #bf4e4e;
+      --success: #319f5f;
+      --border: #363636;
+      --shadow: 0 12px 26px rgba(0, 0, 0, 0.32);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(1400px 1000px at 100% -25%, #2b2b2b 0%, var(--bg) 52%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 16px 14px 88px;
+      position: relative;
+    }
+
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .brand {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .city-pill {
+      font-size: 0.78rem;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+    }
+
+    .hero-card, .card {
+      background: linear-gradient(170deg, #2a2a2a 0%, var(--card) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .hero-card h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.35;
+    }
+
+    .hero-card p {
+      margin: 10px 0 0;
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .role-toggle {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .pill-button {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #202020;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: 180ms ease;
+    }
+
+    .pill-button.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: #ffe7db;
+    }
+
+    .quick-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .metric {
+      background: #1f1f1f;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px;
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--text);
+      margin-top: 4px;
+      font-size: 0.96rem;
+    }
+
+    .section-header {
+      margin: 14px 0 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+
+    .chip-row::-webkit-scrollbar { display: none; }
+
+    .chip {
+      white-space: nowrap;
+      border-radius: 999px;
+      font-size: 0.77rem;
+      padding: 7px 11px;
+      border: 1px solid var(--border);
+      background: #202020;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .chip.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: #fbe3d7;
+    }
+
+    .search {
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #1f1f1f;
+      color: var(--text);
+      padding: 11px 12px;
+      font-size: 0.86rem;
+    }
+
+    .search::placeholder { color: #8d8d8d; }
+
+    .post-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .post {
+      padding: 12px;
+    }
+
+    .post-head {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      margin-bottom: 9px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #444;
+    }
+
+    .post-head .user {
+      font-weight: 600;
+      font-size: 0.84rem;
+    }
+
+    .post-head .meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .post-img {
+      width: 100%;
+      border-radius: 12px;
+      height: 166px;
+      object-fit: cover;
+      border: 1px solid #3a3a3a;
+    }
+
+    .post-body {
+      margin: 8px 0;
+      line-height: 1.42;
+      font-size: 0.84rem;
+      color: #e8e8e8;
+    }
+
+    .restaurant-tag {
+      display: inline-flex;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.73rem;
+      padding: 5px 8px;
+      color: #ddd;
+      margin-right: 6px;
+      margin-bottom: 5px;
+      background: #1f1f1f;
+    }
+
+    .go-back {
+      font-size: 0.76rem;
+      color: #ffddce;
+      background: #3f2b22;
+      border: 1px solid #664132;
+      border-radius: 8px;
+      display: inline-block;
+      padding: 5px 7px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 7px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      margin-left: 6px;
+      border: 1px solid #37734c;
+      color: #b8f1cb;
+      background: rgba(49, 159, 95, 0.15);
+    }
+
+    .reactions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .reaction-buttons {
+      display: flex;
+      gap: 7px;
+    }
+
+    .reaction-btn {
+      border: 1px solid var(--border);
+      background: #1f1f1f;
+      color: #ececec;
+      border-radius: 8px;
+      font-size: 0.79rem;
+      padding: 6px 8px;
+      cursor: pointer;
+    }
+
+    .reaction-btn.active {
+      border-color: var(--accent);
+      color: #ffd4bf;
+      background: #3b281e;
+    }
+
+    .timestamp {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .composer {
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .composer h3 {
+      margin: 0 0 9px;
+      font-size: 0.92rem;
+    }
+
+    .field {
+      margin-bottom: 9px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.76rem;
+      margin-bottom: 5px;
+      color: #c5c5c5;
+    }
+
+    .field input, .field textarea, .field select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #1f1f1f;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px;
+      font: inherit;
+      font-size: 0.82rem;
+    }
+
+    textarea { min-height: 72px; resize: vertical; }
+
+    .radio-group {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .radio-group label {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.76rem;
+      color: #ccc;
+      margin: 0;
+    }
+
+    .radio-group input { display: none; }
+
+    .radio-group input:checked + span {
+      color: #ffd7c5;
+      font-weight: 600;
+    }
+
+    .radio-group label:has(input:checked) {
+      border-color: var(--accent);
+      background: #39261d;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      padding: 11px;
+      background: linear-gradient(170deg, #bc6038, #9f4c29);
+      color: #fff7f2;
+      cursor: pointer;
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 12px;
+    }
+
+    .subcard {
+      padding: 11px;
+      background: #1e1e1e;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .subcard h4 {
+      margin: 0 0 6px;
+      font-size: 0.81rem;
+    }
+
+    .subcard p {
+      margin: 0;
+      font-size: 0.74rem;
+      color: #bababa;
+      line-height: 1.4;
+    }
+
+    .reward {
+      margin-top: 10px;
+      padding: 11px;
+      border: 1px dashed #845440;
+      border-radius: 10px;
+      background: #2d221d;
+    }
+
+    .reward strong {
+      display: block;
+      font-size: 0.82rem;
+      margin-bottom: 3px;
+      color: #ffd7c3;
+    }
+
+    .reward small { color: #d2ab9a; }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 8px;
+      width: min(430px, calc(100% - 20px));
+      background: rgba(34, 34, 34, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      padding: 7px 4px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
+    }
+
+    .nav-item {
+      border: none;
+      background: none;
+      color: #acacac;
+      font-size: 0.68rem;
+      display: grid;
+      gap: 4px;
+      justify-items: center;
+      cursor: pointer;
+      padding: 5px 3px;
+    }
+
+    .nav-item.active { color: #ffd9c8; }
+
+    .nav-icon { font-size: 1rem; line-height: 1; }
+
+    .hidden { display: none; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Survey Form</h1>
-        <form id="survey-form">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="age">Age:</label>
-                <input type="number" id="age" name="age" required>
-            </div>
-            <div class="form-group">
-                <label for="gender">Gender:</label>
-                <select id="gender" name="gender" required>
-                    <option value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="feedback">Feedback:</label>
-                <textarea id="feedback" name="feedback" required></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit">Submit</button>
-            </div>
-        </form>
+  <main class="app-shell">
+    <header class="top-header">
+      <div class="brand">Honestly</div>
+      <div class="city-pill">Copenhagen · Local Live Feed</div>
+    </header>
+
+    <section class="hero-card">
+      <h1>Real moments from guests. Real responses from owners.</h1>
+      <p>
+        Honestly is a mobile-first social loop for Copenhagen restaurants: guests post photo reviews,
+        owners respond in private, and resolved issues earn rewards.
+      </p>
+      <div class="role-toggle" id="roleToggle">
+        <button class="pill-button active" data-role="guest">Guest view</button>
+        <button class="pill-button" data-role="owner">Owner view</button>
+      </div>
+      <div class="quick-metrics">
+        <div class="metric">Copenhagen restaurants <strong id="metricRestaurants">128</strong></div>
+        <div class="metric">Open complaints <strong id="metricOpen">12</strong></div>
+        <div class="metric">Resolved today <strong id="metricResolved">8</strong></div>
+      </div>
+    </section>
+
+    <div class="section-header">
+      <h2>Discover & filter</h2>
     </div>
-    <script>
-        document.getElementById('survey-form').addEventListener('submit', function(event) {
-            event.preventDefault();
 
-            const formData = new FormData(event.target);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
+    <div class="chip-row" id="filterChips">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="resolved">Resolved</button>
+      <button class="chip" data-filter="high">Highly Rated</button>
+      <button class="chip" data-filter="near">Near Me</button>
+    </div>
 
-            fetch('https://script.google.com/macros/library/d/1nhPcynVIntdy5PhBfCKy_tmaA_KsVeRac-aj19ptsu4AIXGYDLRJAz8A/1', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                alert('Thank you for your feedback!');
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
-        });
-    </script>
+    <input class="search" id="restaurantSearch" type="search" placeholder="Search restaurants by name or cuisine…" />
+
+    <section class="post-list" id="postList"></section>
+
+    <section class="card composer" id="guestComposer">
+      <h3>Create a new post</h3>
+      <form id="postForm">
+        <div class="field">
+          <label for="photoUrl">Photo URL (camera/gallery upload placeholder)</label>
+          <input id="photoUrl" name="photoUrl" type="url" required placeholder="https://images.example.com/dinner.jpg" />
+        </div>
+        <div class="field">
+          <label for="description">What happened?</label>
+          <textarea id="description" name="description" required placeholder="Share your honest experience..."></textarea>
+        </div>
+        <div class="field">
+          <label for="restaurant">Tag restaurant</label>
+          <select id="restaurant" name="restaurant" required></select>
+        </div>
+        <div class="field">
+          <label>Would you go back?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="goBack" value="Yes" checked /><span>Yes</span></label>
+            <label><input type="radio" name="goBack" value="Maybe" /><span>Maybe</span></label>
+            <label><input type="radio" name="goBack" value="No" /><span>No</span></label>
+          </div>
+        </div>
+        <button class="btn" type="submit">Post to feed</button>
+      </form>
+    </section>
+
+    <section class="card composer hidden" id="ownerTools">
+      <h3>Owner tools · Claim, reply, resolve</h3>
+      <div class="grid-2">
+        <article class="subcard">
+          <h4>Claim restaurant</h4>
+          <p>Search pre-loaded Copenhagen restaurants, then verify ownership via business email or SMS code.</p>
+        </article>
+        <article class="subcard">
+          <h4>Private messaging</h4>
+          <p>Start a DM thread with any guest who posted. Guests can accept or decline.</p>
+        </article>
+      </div>
+      <div class="field" style="margin-top:10px;">
+        <label for="resolveSelect">Mark a complaint resolved</label>
+        <select id="resolveSelect"></select>
+      </div>
+      <div class="field">
+        <label for="reward">Optional reward</label>
+        <input id="reward" type="text" placeholder="Free dessert on your next visit" />
+      </div>
+      <button class="btn" id="resolveBtn" type="button">Resolve selected issue</button>
+    </section>
+
+    <section class="card composer">
+      <h3>Restaurant profile preview</h3>
+      <div class="field">
+        <label for="restaurantProfileSelect">Choose restaurant</label>
+        <select id="restaurantProfileSelect"></select>
+      </div>
+      <article class="subcard" id="restaurantProfile"></article>
+      <div id="restaurantPosts"></div>
+    </section>
+
+    <section class="card composer">
+      <h3>My rewards</h3>
+      <div id="rewardList"></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active"><span class="nav-icon">📰</span>Feed</button>
+    <button class="nav-item"><span class="nav-icon">➕</span>Post</button>
+    <button class="nav-item"><span class="nav-icon">🔎</span>Discover</button>
+    <button class="nav-item"><span class="nav-icon">💬</span>Messages</button>
+    <button class="nav-item"><span class="nav-icon">👤</span>Profile</button>
+  </nav>
+
+  <script>
+    const restaurants = [
+      {
+        id: 'noma', name: 'Noma', address: 'Refshalevej 96, 1432 Copenhagen', cuisine: 'Nordic Fine Dining',
+        coordinates: '55.6929, 12.6115', photo: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80',
+        openingHours: 'Wed-Sat · 17:30-00:00'
+      },
+      {
+        id: 'geranium', name: 'Geranium', address: 'Per Henrik Lings Allé 4, 2100 Copenhagen', cuisine: 'Contemporary Nordic',
+        coordinates: '55.7036, 12.5721', photo: 'https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=900&q=80',
+        openingHours: 'Tue-Sat · 18:00-23:00'
+      },
+      {
+        id: 'sanchez', name: 'Sanchez', address: 'Istedgade 62, 1650 Copenhagen', cuisine: 'Mexican',
+        coordinates: '55.6697, 12.5539', photo: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80',
+        openingHours: 'Daily · 12:00-23:00'
+      },
+      {
+        id: 'bistro', name: 'Bæst', address: 'Guldbergsgade 29F, 2200 Copenhagen', cuisine: 'Pizza / Italian',
+        coordinates: '55.6957, 12.5475', photo: 'https://images.unsplash.com/photo-1515669097368-22e68427d265?auto=format&fit=crop&w=900&q=80',
+        openingHours: 'Daily · 17:00-23:00'
+      }
+    ];
+
+    const state = {
+      role: 'guest',
+      filter: 'all',
+      search: '',
+      posts: [
+        {
+          id: 'p1',
+          user: 'Maja L.',
+          userPhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+          restaurantId: 'sanchez',
+          photo: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=900&q=80',
+          text: 'Service was warm but our table waited 35 minutes for mains. Food quality stayed strong though.',
+          goBack: 'Maybe',
+          reactions: { like: 14, neutral: 2, angry: 3 },
+          createdAt: Date.now() - 1000 * 60 * 20,
+          resolved: true,
+          reward: 'Free dessert on next booking',
+          dmOpen: true
+        },
+        {
+          id: 'p2',
+          user: 'Jonas R.',
+          userPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+          restaurantId: 'noma',
+          photo: 'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=900&q=80',
+          text: 'Tasting menu was brilliant. Everything felt deliberate and exciting.',
+          goBack: 'Yes',
+          reactions: { like: 20, neutral: 1, angry: 0 },
+          createdAt: Date.now() - 1000 * 60 * 90,
+          resolved: false,
+          reward: '',
+          dmOpen: false
+        },
+        {
+          id: 'p3',
+          user: 'Sofia K.',
+          userPhoto: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+          restaurantId: 'bistro',
+          photo: 'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=900&q=80',
+          text: 'Pizza was lovely, but music volume was too high for conversation near the kitchen.',
+          goBack: 'No',
+          reactions: { like: 4, neutral: 5, angry: 9 },
+          createdAt: Date.now() - 1000 * 60 * 220,
+          resolved: false,
+          reward: '',
+          dmOpen: true
+        }
+      ],
+      selectedReaction: {}
+    };
+
+    const postList = document.getElementById('postList');
+    const filterChips = document.getElementById('filterChips');
+    const searchInput = document.getElementById('restaurantSearch');
+    const roleToggle = document.getElementById('roleToggle');
+    const guestComposer = document.getElementById('guestComposer');
+    const ownerTools = document.getElementById('ownerTools');
+    const postForm = document.getElementById('postForm');
+    const restaurantSelect = document.getElementById('restaurant');
+    const resolveSelect = document.getElementById('resolveSelect');
+    const resolveBtn = document.getElementById('resolveBtn');
+    const rewardInput = document.getElementById('reward');
+    const rewardList = document.getElementById('rewardList');
+    const restaurantProfileSelect = document.getElementById('restaurantProfileSelect');
+
+    function seedRestaurantOptions() {
+      restaurants.forEach((restaurant) => {
+        const option = document.createElement('option');
+        option.value = restaurant.id;
+        option.textContent = `${restaurant.name} · ${restaurant.cuisine}`;
+        restaurantSelect.append(option.cloneNode(true));
+        restaurantProfileSelect.append(option.cloneNode(true));
+      });
+      renderResolveSelect();
+    }
+
+    function renderResolveSelect() {
+      resolveSelect.innerHTML = '';
+      const unresolved = state.posts.filter((post) => !post.resolved);
+      if (!unresolved.length) {
+        const empty = document.createElement('option');
+        empty.textContent = 'No unresolved complaints';
+        empty.value = '';
+        resolveSelect.append(empty);
+        return;
+      }
+      unresolved.forEach((post) => {
+        const restaurant = restaurants.find((r) => r.id === post.restaurantId);
+        const option = document.createElement('option');
+        option.value = post.id;
+        option.textContent = `${post.user} · ${restaurant.name}`;
+        resolveSelect.append(option);
+      });
+    }
+
+    function formatTime(ts) {
+      const mins = Math.max(1, Math.round((Date.now() - ts) / 60000));
+      if (mins < 60) return `${mins}m ago`;
+      const hours = Math.round(mins / 60);
+      return `${hours}h ago`;
+    }
+
+    function getFilteredPosts() {
+      return state.posts
+        .filter((post) => {
+          const restaurant = restaurants.find((r) => r.id === post.restaurantId);
+          const matchesSearch = !state.search ||
+            restaurant.name.toLowerCase().includes(state.search) ||
+            restaurant.cuisine.toLowerCase().includes(state.search);
+          if (!matchesSearch) return false;
+          if (state.filter === 'resolved') return post.resolved;
+          if (state.filter === 'high') return post.goBack === 'Yes';
+          if (state.filter === 'near') return ['sanchez', 'bistro'].includes(post.restaurantId);
+          return true;
+        })
+        .sort((a, b) => b.createdAt - a.createdAt);
+    }
+
+    function renderPosts() {
+      const posts = getFilteredPosts();
+      postList.innerHTML = '';
+
+      if (!posts.length) {
+        postList.innerHTML = '<article class="card post"><p class="post-body">No posts match your current filters.</p></article>';
+        return;
+      }
+
+      posts.forEach((post) => {
+        const restaurant = restaurants.find((r) => r.id === post.restaurantId);
+        const activeReaction = state.selectedReaction[post.id];
+
+        const card = document.createElement('article');
+        card.className = 'card post';
+        card.innerHTML = `
+          <div class="post-head">
+            <img class="avatar" src="${post.userPhoto}" alt="${post.user}" />
+            <div>
+              <div class="user">${post.user}</div>
+              <div class="meta">@${post.user.toLowerCase().replace(/\s+/g, '')} · ${formatTime(post.createdAt)}</div>
+            </div>
+          </div>
+          <img class="post-img" src="${post.photo}" alt="Post at ${restaurant.name}" />
+          <p class="post-body">${post.text}</p>
+          <div>
+            <span class="restaurant-tag">📍 ${restaurant.name}</span>
+            <span class="go-back">Would go back: ${post.goBack}</span>
+            ${post.resolved ? '<span class="status-badge">Resolved ✓</span>' : ''}
+          </div>
+          ${post.reward ? `<div class="reward"><strong>Reward unlocked</strong><small>${restaurant.name} · ${post.reward}</small></div>` : ''}
+          <div class="reactions">
+            <div class="reaction-buttons">
+              <button class="reaction-btn ${activeReaction === 'like' ? 'active' : ''}" data-post="${post.id}" data-react="like">👍 ${post.reactions.like}</button>
+              <button class="reaction-btn ${activeReaction === 'neutral' ? 'active' : ''}" data-post="${post.id}" data-react="neutral">😐 ${post.reactions.neutral}</button>
+              <button class="reaction-btn ${activeReaction === 'angry' ? 'active' : ''}" data-post="${post.id}" data-react="angry">😤 ${post.reactions.angry}</button>
+            </div>
+            <span class="timestamp">DM ${post.dmOpen ? 'available' : 'closed'} · ${restaurant.address}</span>
+          </div>
+        `;
+        postList.append(card);
+      });
+    }
+
+    function renderRewards() {
+      const rewards = state.posts.filter((post) => post.reward);
+      rewardList.innerHTML = rewards.length
+        ? rewards.map((post) => {
+          const restaurant = restaurants.find((r) => r.id === post.restaurantId);
+          return `<div class="reward"><strong>${restaurant.name}</strong><small>${post.reward}</small></div>`;
+        }).join('')
+        : '<p class="post-body" style="margin:0;">No rewards yet. Resolve a complaint to unlock vouchers.</p>';
+    }
+
+    function renderProfile(restaurantId) {
+      const restaurant = restaurants.find((r) => r.id === restaurantId) || restaurants[0];
+      const taggedPosts = state.posts.filter((post) => post.restaurantId === restaurant.id);
+      const yesCount = taggedPosts.filter((post) => post.goBack === 'Yes').length;
+      const score = taggedPosts.length ? Math.round((yesCount / taggedPosts.length) * 100) : 0;
+
+      document.getElementById('restaurantProfile').innerHTML = `
+        <h4>${restaurant.name}</h4>
+        <p>${restaurant.address}</p>
+        <p>${restaurant.cuisine} · ${restaurant.coordinates}</p>
+        <p>${restaurant.openingHours}</p>
+        <p><strong>Would-go-back score:</strong> ${score}%</p>
+      `;
+
+      const list = document.getElementById('restaurantPosts');
+      list.innerHTML = taggedPosts.map((post) => `
+        <div class="reward" style="margin-top:8px;">
+          <strong>${post.user}</strong>
+          <small>${post.goBack} · ${post.resolved ? 'Resolved' : 'Open'} · ${post.text.slice(0, 80)}...</small>
+        </div>
+      `).join('') || '<p class="post-body">No posts tagged yet.</p>';
+    }
+
+    function refreshMetrics() {
+      document.getElementById('metricRestaurants').textContent = restaurants.length;
+      document.getElementById('metricOpen').textContent = state.posts.filter((p) => !p.resolved).length;
+      document.getElementById('metricResolved').textContent = state.posts.filter((p) => p.resolved).length;
+    }
+
+    roleToggle.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-role]');
+      if (!button) return;
+      state.role = button.dataset.role;
+      [...roleToggle.querySelectorAll('button')].forEach((btn) => btn.classList.toggle('active', btn === button));
+      guestComposer.classList.toggle('hidden', state.role !== 'guest');
+      ownerTools.classList.toggle('hidden', state.role !== 'owner');
+    });
+
+    filterChips.addEventListener('click', (event) => {
+      const chip = event.target.closest('button[data-filter]');
+      if (!chip) return;
+      state.filter = chip.dataset.filter;
+      [...filterChips.querySelectorAll('.chip')].forEach((c) => c.classList.toggle('active', c === chip));
+      renderPosts();
+    });
+
+    searchInput.addEventListener('input', (event) => {
+      state.search = event.target.value.trim().toLowerCase();
+      renderPosts();
+    });
+
+    postList.addEventListener('click', (event) => {
+      const reactBtn = event.target.closest('.reaction-btn');
+      if (!reactBtn) return;
+      const post = state.posts.find((item) => item.id === reactBtn.dataset.post);
+      const key = reactBtn.dataset.react;
+      if (!post) return;
+
+      const current = state.selectedReaction[post.id];
+      if (current && current !== key) post.reactions[current] = Math.max(0, post.reactions[current] - 1);
+      if (current === key) {
+        post.reactions[key] = Math.max(0, post.reactions[key] - 1);
+        delete state.selectedReaction[post.id];
+      } else {
+        post.reactions[key] += 1;
+        state.selectedReaction[post.id] = key;
+      }
+      renderPosts();
+    });
+
+    postForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(postForm);
+
+      state.posts.unshift({
+        id: `p${Date.now()}`,
+        user: 'You',
+        userPhoto: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=200&q=80',
+        restaurantId: data.get('restaurant'),
+        photo: data.get('photoUrl'),
+        text: data.get('description'),
+        goBack: data.get('goBack'),
+        reactions: { like: 0, neutral: 0, angry: 0 },
+        createdAt: Date.now(),
+        resolved: false,
+        reward: '',
+        dmOpen: true
+      });
+
+      postForm.reset();
+      postForm.querySelector('input[name="goBack"][value="Yes"]').checked = true;
+      renderResolveSelect();
+      renderPosts();
+      refreshMetrics();
+      renderRewards();
+      renderProfile(restaurantProfileSelect.value);
+    });
+
+    resolveBtn.addEventListener('click', () => {
+      const selectedId = resolveSelect.value;
+      if (!selectedId) return;
+
+      const post = state.posts.find((item) => item.id === selectedId);
+      if (!post) return;
+      post.resolved = true;
+      post.reward = rewardInput.value.trim();
+      rewardInput.value = '';
+      renderResolveSelect();
+      renderPosts();
+      renderRewards();
+      refreshMetrics();
+      renderProfile(restaurantProfileSelect.value);
+    });
+
+    restaurantProfileSelect.addEventListener('change', (event) => renderProfile(event.target.value));
+
+    seedRestaurantOptions();
+    restaurantProfileSelect.value = restaurants[0].id;
+    renderProfile(restaurants[0].id);
+    renderPosts();
+    renderRewards();
+    refreshMetrics();
+  </script>
 </body>
 </html>
